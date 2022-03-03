@@ -22,6 +22,22 @@ curl https://github.com/alphabet5/ks/releases/download/0.0.1/ks-darwin-amd64
 mv ./ks /usr/local/bin
 ```
 
+## Installation from Source
+
+```bash
+cd ~/
+git clone https://github.com/alphabet5/ks.git
+cd ks
+go build
+sudo mv ks /usr/local/bin/ks
+
+cd ~/
+git clone https://github.com/bitnami/sealed-secrets.git
+cd sealed-secrets/cmd/kubeseal
+go build
+sudo mv kubeseal /usr/local/bin/kubeseal
+```
+
 ## Usage
 
 ```bash
