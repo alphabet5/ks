@@ -1,0 +1,6 @@
+parent:
+  child1:
+    grandchild1: encrypt me please
+parent2:
+  child1:
+    grandchild1: also encrypt me
