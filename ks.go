@@ -92,13 +92,13 @@ func main() {
 		if err != nil {
 			log.Fatalf("Unmarshal: %v", err)
 		}
-                
+
 		outputValues := make(map[string]interface{})
 		outputYamlFile, err := ioutil.ReadFile(*o)
 		if err != nil {
 			log.Printf("outputYamlFile.Get err   #%v ", err)
 		}
-                cm := yaml.CommentMap{}
+		cm := yaml.CommentMap{}
 		err = yaml.UnmarshalWithOptions(outputYamlFile, &outputValues, yaml.CommentToMap(cm))
 		if err != nil {
 			log.Fatalf("Unmarshal: %v", err)
@@ -116,8 +116,8 @@ func main() {
 			}
 			outputValues = dotNotationReplace(outputValues, strings.Split(path, "."), string(stdout))
 		}
-                output, err := yaml.MarshalWithOptions(outputValues, yaml.WithComment(cm), yaml.UseLiteralStyleIfMultiline(true))
-		//output, err := yaml.Marshal(outputValues)
+		output, err := yaml.MarshalWithOptions(outputValues, yaml.WithComment(cm), yaml.UseLiteralStyleIfMultiline(true))
+
 		if err != nil {
 			log.Fatalf("Marshal: %v", err)
 		}
