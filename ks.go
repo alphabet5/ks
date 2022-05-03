@@ -116,7 +116,7 @@ func main() {
 			}
 			outputValues = dotNotationReplace(outputValues, strings.Split(path, "."), string(stdout))
 		}
-                output, err := yaml.MarshalWithOptions(outputValues, yaml.WithComment(cm))
+                output, err := yaml.MarshalWithOptions(outputValues, yaml.WithComment(cm), yaml.UseLiteralStyleIfMultiline(true))
 		//output, err := yaml.Marshal(outputValues)
 		if err != nil {
 			log.Fatalf("Marshal: %v", err)
