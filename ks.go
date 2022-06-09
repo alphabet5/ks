@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/akamensky/argparse"
-	"github.com/goccy/go-yaml"
 	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/akamensky/argparse"
+	"github.com/goccy/go-yaml"
 )
 
 func dotNotationReplace(yml map[string]interface{}, path []string, value string) map[string]interface{} {
@@ -61,13 +62,12 @@ func main() {
 		for _, secret := range input_secrets {
 			fmt.Println(secret)
 			cmd := exec.Command("bash", "-c",
-				"echo -n \""+secret+
-					"\" | kubeseal --controller-namespace "+input_namespace+
+				"echo -n '"+secret+
+					"' | kubeseal --controller-namespace "+input_namespace+
 					" --raw --scope "+input_scope+
 					" --from-file=/dev/stdin --controller-name "+input_controller,
 			)
 			stdout, err := cmd.Output()
-
 			if err != nil {
 				fmt.Println(err.Error())
 				return
