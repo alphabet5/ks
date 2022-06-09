@@ -84,3 +84,9 @@ parent.child2.grandchild2: please also encrypt me" -o output.yaml
 ```
 ks -i input.yaml -o output.yaml
 ```
+
+## Changelog
+
+### 0.0.3
+
+- Changed the sending to kubeseal to be quoted with ' instead of "
