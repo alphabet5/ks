@@ -42,11 +42,12 @@ func main() {
             `)
 	// Create string flag
 	s := parser.StringList("s", "secret", &argparse.Options{Required: false, Default: nil, Help: "Secrets."})
-	i := parser.String("i", "input", &argparse.Options{Required: false, Default: "", Help: "Input secrets file."})
-	o := parser.String("o", "output", &argparse.Options{Required: false, Default: "", Help: "Output file to put the secrest."})
-	c := parser.String("c", "controller", &argparse.Options{Required: false, Default: "sealed-secrets", Help: "Sealed secrets controller name."})
-	n := parser.String("n", "namespace", &argparse.Options{Required: false, Default: "sealed-secrets", Help: "Sealed secrets controller namespace."})
-	scope := parser.String("", "scope", &argparse.Options{Required: false, Default: "cluster-wide", Help: "Sealed secret scope."})
+	i := parser.String("i", "input", &argparse.Options{Required: false, Default: "", Help: "Input secrets file"})
+	o := parser.String("o", "output", &argparse.Options{Required: false, Default: "", Help: "Output file to put the secrets"})
+	c := parser.String("c", "controller", &argparse.Options{Required: false, Default: "sealed-secrets", Help: "Sealed secrets controller name"})
+	n := parser.String("n", "namespace", &argparse.Options{Required: false, Default: "sealed-secrets", Help: "Sealed secrets controller namespace"})
+	scope := parser.String("", "scope", &argparse.Options{Required: false, Default: "cluster-wide", Help: "Sealed secret scope"})
+	cert := parser.String("", "cert", &argparse.Options{Required: false, Default: "", Help: "Certificate file"})
 	// Parse input
 	err := parser.Parse(os.Args)
 	if err != nil {
@@ -57,15 +58,24 @@ func main() {
 	input_controller := *c
 	input_namespace := *n
 	input_scope := *scope
+	certificate_file := *cert
+
+	// If certificate file is provided, use this instead of specifying namespace and controller.
+	var cert_args string
+	if *cert != "" {
+		cert_args = "--cert=" + certificate_file
+	} else {
+		cert_args = "--controller-namespace=" + input_namespace + " --controller-name=" + input_controller
+	}
+
 	if len(*s) > 0 && (*o == "") {
 		input_secrets := *s
 		for _, secret := range input_secrets {
 			fmt.Println(secret)
 			cmd := exec.Command("bash", "-c",
 				"echo -n '"+secret+
-					"' | kubeseal --controller-namespace "+input_namespace+
-					" --raw --scope "+input_scope+
-					" --from-file=/dev/stdin --controller-name "+input_controller,
+					"' | kubeseal --scope="+input_scope+" "+cert_args+
+					" --raw --from-file=/dev/stdin",
 			)
 			stdout, err := cmd.Output()
 			if err != nil {
@@ -106,9 +116,8 @@ func main() {
 		for path, value := range inputValues {
 			cmd := exec.Command("bash", "-c",
 				"echo -n \""+fmt.Sprintf("%v", value)+
-					"\" | kubeseal --controller-namespace "+input_namespace+
-					" --raw --scope "+input_scope+
-					" --from-file=/dev/stdin --controller-name "+input_controller,
+					"\" | kubeseal --scope="+input_scope+" "+cert_args+
+					" --raw --from-file=/dev/stdin",
 			)
 			stdout, err := cmd.Output()
 			if err != nil {
