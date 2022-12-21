@@ -1,6 +1,8 @@
 # ks
  Utility to make kubeseal --raw a bit easier.
 
+ This allows saving your unencrypted secrets in collapsed / dot-notation yaml. (In a secrets/password manager...)
+
 ## Building
 
 ```bash
@@ -18,8 +20,17 @@ GOOS=linux GOARCH=riscv64 go build -o ks-linux-riscv64 ks.go
 ## Installation (MacOS, amd64)
 
 ```bash
-curl https://github.com/alphabet5/ks/releases/download/0.0.1/ks-darwin-amd64
-mv ./ks /usr/local/bin
+curl https://github.com/alphabet5/ks/releases/download/0.0.3/ks-darwin-amd64
+chmod 
+mv ./ks-darwin-amd64 /usr/local/bin/ks
+```
+
+## Installation (Linux, <arch>)
+
+```bash
+curl https://github.com/alphabet5/ks/releases/download/0.0.3/ks-linux-amd64
+chmod +x ./ks-linux-amd64
+mv ./ks-linux-amd64 /usr/local/bin/ks
 ```
 
 ## Installation from Source
@@ -92,6 +103,10 @@ ks -i input.yaml -o output.yaml --cert=downloaded-certificate.pem
 ```
 
 ## Changelog
+
+### 0.0.4
+- Add support for providing a certificate file.
+- Bumped go to 
 
 ### 0.0.3
 
